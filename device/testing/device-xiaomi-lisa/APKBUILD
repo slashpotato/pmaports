@@ -26,6 +26,7 @@ depends="
 	postmarketos-base
 	soc-qcom-sc7280
 	soc-qcom-sc7280-qbootctl
+	grub
 "
 makedepends="devicepkg-dev"
 source="
@@ -42,6 +43,6 @@ package() {
 }
 
 sha512sums="
-4d4c6bc1e71d06dede63e6845cfe942816e0c39f4ba8e6b4b5ab0fcc2256752330ac92c65240793dad5aabdba7548c52e1ccc7e69cc9d93e442a78b453b55d6c  deviceinfo
+7a563bbddee7aba84ab128b2a523afdb3fd1c42cf69bd81a6817671c7e936bc59b9293a1f73b6451ab9ce68400c60f62055bc3a84f296857d7b7d9e49fd5aa58  deviceinfo
 ffa8d4f3c13f80b9910c313770e8dc6b3ceab7ad74ed5232335a272c78b1b43e2dc200ee516d7d662c1610771c4cd8a046bb52702173dc2a551831a068def4f0  modules-initfs
 "
