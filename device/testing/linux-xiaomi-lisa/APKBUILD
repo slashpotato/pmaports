@@ -1,0 +1,62 @@
+# Maintainer: slashpotato <slashpotato@proton.me>
+
+_flavor="xiaomi-lisa"
+pkgname=linux-$_flavor
+pkgver=6.14.0_rc5
+pkgrel=0
+pkgdesc="Mainline Kernel fork for Xiaomi 11 Lite 5G NE (lisa)"
+arch="aarch64"
+_carch="arm64"
+url="https://github.com/slashpotato/linux-xiaomi-lisa"
+license="GPL-2.0-only"
+options="!strip !check !tracedeps
+	pmb:cross-native
+	pmb:kconfigcheck-community
+	"
+makedepends="bash bison findutils flex installkernel openssl-dev perl python3"
+
+_repo="linux-xiaomi-lisa"
+_config="config-$_flavor.$arch"
+_tag="v6.14.0-rc5"
+
+# Source
+source="
+	https://github.com/slashpotato/linux-xiaomi-lisa/archive/refs/tags/$_tag.tar.gz
+	$_config
+"
+builddir="$srcdir/$_repo-6.14.0-rc5"
+
+prepare() {
+	default_prepare
+	cp "$srcdir/config-$_flavor.$arch" .config
+}
+
+build() {
+	unset LDFLAGS
+	make ARCH="$_carch" CC="${CC:-gcc}" \
+		KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-$_flavor" -j$(nproc)
+}
+
+package() {
+	install -Dm644 "$builddir/arch/$_carch/boot/vmlinuz" \
+		"$pkgdir/boot/vmlinuz"
+
+	install -Dm644 "$builddir/arch/$_carch/boot/vmlinuz.efi" \
+		"$pkgdir/boot/vmlinuz.efi"
+
+	make modules_install dtbs_install \
+		ARCH="$_carch" \
+		INSTALL_PATH="$pkgdir"/boot/ \
+		INSTALL_MOD_PATH="$pkgdir" \
+		INSTALL_MOD_STRIP=1 \
+		INSTALL_DTBS_PATH="$pkgdir"/boot/dtbs
+	rm -f "$pkgdir"/lib/modules/*/build "$pkgdir"/lib/modules/*/source
+
+	install -D "$builddir"/include/config/kernel.release \
+		"$pkgdir"/usr/share/kernel/$_flavor/kernel.release
+}
+
+sha512sums="
+92cc9e0934023e5bac146627b56d19622ce72d249991066061f25f9db238fda2a30489f38c232b57a3406803dd64ff8116a8e9826771251c034e9eef1dc2899b  v6.14.0-rc5.tar.gz
+69298bc608d7acaba60e7311cfd27f9be875f966043a238277e255ca2cc323a211a71549f605733be6dd25efcb826ad308ca0d42b5489ffd086a62309da1ec5f  config-xiaomi-lisa.aarch64
+"

@@ -20,7 +20,7 @@ depends="
 	firmware-xiaomi-lisa-wpss
 	firmware-qcom-adreno-a660
 	linux-firmware-qca
-	linux-postmarketos-qcom-sc7280
+	linux-xiaomi-lisa
 	make-dynpart-mappings
 	mkbootimg
 	postmarketos-base
