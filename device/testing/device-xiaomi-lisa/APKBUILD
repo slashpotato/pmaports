@@ -27,6 +27,7 @@ depends="
 	soc-qcom-sc7280
 	soc-qcom-sc7280-qbootctl
 	grub
+	android-tools
 "
 makedepends="devicepkg-dev"
 source="
